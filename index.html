@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Todo List</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 60px 20px 20px;
+      background: #fdfdfd;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .circle {
+      width: 16px;
+      height: 16px;
+      border: 2px solid #666;
+      border-radius: 50%;
+      cursor: pointer;
+      flex-shrink: 0;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    .circle:hover {
+      border-color: #333;
+    }
+
+    .circle.completed {
+      background-color: rgb(20, 200, 255);
+      border-color: rgb(20, 200, 255);
+    }
+
+    li.completed span {
+      text-decoration: line-through;
+      color: #aaa;
+    }
+
+    #taskInput {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-bottom: 2px solid #ccc;
+      outline: none;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+
+    #titlebar {
+      -webkit-app-region: drag;
+      height: 40px;
+      background-color: #f0f0f0;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      box-sizing: border-box;
+    }
+
+    #titlebar h1 {
+      margin: 0;
+      font-size: 18px;
+      -webkit-app-region: no-drag;
+    }
+
+    #closeBtn {
+      -webkit-app-region: no-drag;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      margin-left: auto;
+      color: #888;
+      transition: color 0.2s;
+      -webkit-app-region: no-drag;
+    }
+
+    .delete-btn:hover {
+      color: red;
+    }
+
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+  <div id="titlebar">
+    <h1>Todo</h1>
+    <button id="closeBtn">✖</button>
+  </div>
+
+  <input id="taskInput" placeholder="Add a new task..." />
+  <ul id="taskList"></ul>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
