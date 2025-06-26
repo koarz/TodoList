@@ -47,6 +47,43 @@ function addTask(text) {
 
   const span = document.createElement('span');
   span.textContent = taskText;
+  span.ondblclick = () => {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = span.textContent;
+    input.style.flexGrow = '1';
+    input.style.fontSize = 'inherit';
+    input.style.border = '1px solid #ccc';
+    input.style.padding = '4px';
+    input.style.marginRight = '8px';
+    input.style.border = 'none';
+    input.style.borderBottom = '1px solid #ccc';
+    input.style.outline = 'none';
+  
+    span.replaceWith(input);
+    input.focus();
+  
+    const saveEdit = () => {
+      const newText = input.value.trim();
+      if (newText) {
+        span.textContent = newText;
+        input.replaceWith(span);
+        saveTasks();
+      } else {
+        input.replaceWith(span);
+      }
+    };
+  
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        saveEdit();
+      } else if (e.key === 'Escape') {
+        input.replaceWith(span);
+      }
+    });
+  
+    input.addEventListener('blur', saveEdit);
+  };
 
   const delBtn = document.createElement('button');
   delBtn.textContent = '⊗';
