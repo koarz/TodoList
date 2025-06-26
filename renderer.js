@@ -48,9 +48,12 @@ function addTask(text) {
   const span = document.createElement('span');
   span.textContent = taskText;
   span.ondblclick = () => {
+    if (li.querySelector('input.editing')) return;
+
     const input = document.createElement('input');
     input.type = 'text';
     input.value = span.textContent;
+    input.className = 'editing';
     input.style.flexGrow = '1';
     input.style.fontSize = 'inherit';
     input.style.border = '1px solid #ccc';
@@ -63,26 +66,27 @@ function addTask(text) {
     span.replaceWith(input);
     input.focus();
   
-    const saveEdit = () => {
+    const finishEdit = () => {
       const newText = input.value.trim();
-      if (newText) {
+      if (newText && newText !== span.textContent) {
         span.textContent = newText;
-        input.replaceWith(span);
         saveTasks();
-      } else {
-        input.replaceWith(span);
       }
+      input.replaceWith(span);
     };
   
     input.addEventListener('keydown', e => {
       if (e.key === 'Enter') {
-        saveEdit();
+        finishEdit();
       } else if (e.key === 'Escape') {
         input.replaceWith(span);
       }
     });
   
-    input.addEventListener('blur', saveEdit);
+    input.addEventListener('blur', () => {
+      // 确保 blur 后不会再触发额外 click
+      setTimeout(finishEdit, 10);
+    });
   };
 
   const delBtn = document.createElement('button');
