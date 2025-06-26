@@ -47,9 +47,20 @@
       border-color: rgb(20, 200, 255);
     }
 
+    li span {
+      flex-grow: 1;
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
     li.completed span {
       text-decoration: line-through;
       color: #aaa;
+      flex-grow: 1;
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
     }
 
     #taskInput {
