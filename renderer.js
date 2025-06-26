@@ -102,3 +102,13 @@ function loadTasks() {
     console.error('读取任务失败:', err);
   }
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  const taskList = document.getElementById('taskList');
+  new Sortable(taskList, {
+    animation: 150,
+    onEnd: () => {
+      saveTasks();
+    }
+  });
+});
