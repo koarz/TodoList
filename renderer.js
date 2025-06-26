@@ -49,7 +49,8 @@ function addTask(text) {
   span.textContent = taskText;
 
   const delBtn = document.createElement('button');
-  delBtn.textContent = '🗑️';
+  delBtn.textContent = '⊗';
+  delBtn.style.fontSize = '23px';
   delBtn.className = 'delete-btn';
   delBtn.onclick = () => {
     li.classList.add('fade-out');
