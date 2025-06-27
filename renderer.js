@@ -148,6 +148,9 @@ window.addEventListener('DOMContentLoaded', () => {
   const taskList = document.getElementById('taskList');
   new Sortable(taskList, {
     animation: 150,
+    delay: 400,
+    delayOnTouchOnly: false,
+    touchStartThreshold: 5,
     onEnd: () => {
       saveTasks();
     }
