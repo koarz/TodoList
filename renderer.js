@@ -46,7 +46,38 @@ function addTask(text) {
   };
 
   const span = document.createElement('span');
-  span.textContent = taskText;
+  // span.textContent = taskText;
+
+  const urlRegex = /\b((?:https?:\/\/)?(?:www\.)?(?:[\w-]+(?:\.[\w-]+)+|localhost|\d{1,3}(?:\.\d{1,3}){3})(?::\d{1,5})?(?:[\/\w#?=&%.,-]*)?)/gi;
+
+  let lastIndex = 0;
+  let match;
+  while ((match = urlRegex.exec(taskText)) !== null) {
+    // 添加匹配前的普通文本
+    if (match.index > lastIndex) {
+      span.appendChild(document.createTextNode(taskText.slice(lastIndex, match.index)));
+    }
+
+    const rawUrl = match[0];
+    const hasProtocol = /^https?:\/\//i.test(rawUrl);
+    const href = hasProtocol ? rawUrl : `https://${rawUrl}`;
+
+    const link = document.createElement('a');
+    link.href = href;
+    link.textContent = rawUrl;
+    link.style.color = '#1a0dab';
+    link.style.textDecoration = 'underline';
+    link.target = '_blank';
+    link.classList.add('task-link');
+
+    span.appendChild(link);
+    lastIndex = urlRegex.lastIndex;
+  }
+
+  if (lastIndex < taskText.length) {
+    span.appendChild(document.createTextNode(taskText.slice(lastIndex)));
+  }
+
   span.ondblclick = () => {
     if (li.querySelector('input.editing')) return;
 
@@ -155,4 +186,13 @@ window.addEventListener('DOMContentLoaded', () => {
       saveTasks();
     }
   });
+});
+
+const { shell } = require('electron');
+
+document.addEventListener('click', e => {
+  if (e.target.tagName === 'A' && e.target.classList.contains('task-link')) {
+    e.preventDefault();
+    shell.openExternal(e.target.href);
+  }
 });
