@@ -16,6 +16,38 @@ document.getElementById('closeBtn').addEventListener('click', () => {
   ipcRenderer.send('close-window');
 });
 
+const pinBtn = document.getElementById('pinBtn');
+let isPinned = false;
+
+if (pinBtn) {
+  const updatePinVisual = () => {
+    pinBtn.classList.toggle('active', isPinned);
+    pinBtn.textContent = isPinned ? '📌' : '📍';
+    pinBtn.title = isPinned ? '取消固定' : '固定在最前';
+  };
+
+  updatePinVisual();
+
+  ipcRenderer
+    .invoke('get-pin-state')
+    .then(state => {
+      isPinned = Boolean(state);
+      updatePinVisual();
+    })
+    .catch(err => {
+      console.error('获取置顶状态失败:', err);
+    });
+
+  pinBtn.addEventListener('click', async () => {
+    try {
+      isPinned = await ipcRenderer.invoke('toggle-pin');
+      updatePinVisual();
+    } catch (err) {
+      console.error('切换置顶失败:', err);
+    }
+  });
+}
+
 function addTask(text) {
   const input = document.getElementById('taskInput');
   const taskText = text || input.value.trim();

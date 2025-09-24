@@ -27,3 +27,15 @@ ipcMain.on('close-window', () => {
     win.close();
   }
 })
+
+ipcMain.handle('get-pin-state', () => {
+  if (!win) return false;
+  return win.isAlwaysOnTop();
+});
+
+ipcMain.handle('toggle-pin', () => {
+  if (!win) return false;
+  const nextState = !win.isAlwaysOnTop();
+  win.setAlwaysOnTop(nextState, 'floating');
+  return nextState;
+});
