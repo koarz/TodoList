@@ -48,7 +48,7 @@ if (pinBtn) {
   });
 }
 
-function addTask(text) {
+function addTask(text, { prepend = true } = {}) {
   const input = document.getElementById('taskInput');
   const taskText = text || input.value.trim();
   if (!taskText) return;
@@ -167,7 +167,12 @@ function addTask(text) {
   li.appendChild(circle);
   li.appendChild(span);
   li.appendChild(delBtn);
-  taskList.appendChild(li);
+
+  if (prepend) {
+    taskList.prepend(li);
+  } else {
+    taskList.appendChild(li);
+  }
 
   saveTasks();
 }
@@ -191,7 +196,7 @@ function loadTasks() {
     const data = fs.readFileSync(savePath, 'utf-8');
     const saved = JSON.parse(data);
     saved.forEach(task => {
-      addTask(task.text);
+      addTask(task.text, { prepend: false });
       if (task.done) {
         const lastLi = document.querySelectorAll('#taskList li:last-child')[0];
         const circle = lastLi.querySelector('.circle');
